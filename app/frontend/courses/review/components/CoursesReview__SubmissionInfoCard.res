@@ -6,7 +6,7 @@ open CoursesReview__Types
 let str = React.string
 
 let cardClasses = (submission, selected) =>
-  "inline-block bg-white relative rounded-lg submission-info__tab shrink-0 rounded-lg transition " ++
+  "inline-block bg-white relative submission-info__tab shrink-0 rounded-lg transition " ++
   (selected
     ? "border border-primary-400 "
     : "bg-white/50 border border-gray-300 hover:bg-white ") ++
@@ -60,7 +60,7 @@ let linkUrl = (submissionId, filterString) => {
 
 let submissionInfoCardContent = (submission, submissionNumber) => {
   <div className="px-4 py-2 flex flex-row items-center justify-between min-w-min">
-    <div className="flex flex-col md:pr-6">
+    <div className="flex flex-col md:pe-6">
       <h2 className="font-semibold text-sm leading-tight">
         <p className="hidden md:block">
           {(t("submission_hash") ++ " #" ++ string_of_int(submissionNumber))->str}

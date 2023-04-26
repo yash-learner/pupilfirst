@@ -20,7 +20,7 @@ let onChangeWidth = (contentBlock, updateContentBlockCB, width, event) => {
 let imageResizeButton = (~width, ~currentWidth, ~contentBlock, ~updateContentBlockCB) => {
   let active = width == currentWidth
 
-  let defaultClasses = "rounded-l flex justify-center items-center px-4 py-2 h-full w-full hover:bg-primary-900 hover:text-green-400 transition duration-500 ease-in-out"
+  let defaultClasses = "rounded-s flex justify-center items-center px-4 py-2 h-full w-full hover:bg-primary-900 hover:text-green-400 transition duration-500 ease-in-out"
 
   let classes = defaultClasses ++ (active ? " bg-primary-900 text-green-500" : "")
 
@@ -86,7 +86,7 @@ let make = (~url, ~caption, ~contentBlock, ~updateContentBlockCB, ~width) => {
     <div className="flex border-t justify-end">
       <div className="flex-1 content-block__action-bar-input p-3">
         <label htmlFor=captionInputId className="text-sm font-semibold"> {"Caption" |> str} </label>
-        <span className="text-sm ml-1"> {ts("optional_braces") |> str} </span>
+        <span className="text-sm ms-1"> {ts("optional_braces") |> str} </span>
         <input
           id=captionInputId
           className="mt-1 appearance-none block w-full h-10 bg-white text-gray-800 border rounded py-3 px-3 focus:border-gray-300 leading-tight focus:outline-none focus:bg-white focus:border-gray"

@@ -1,9 +1,9 @@
-ruby '3.0.5'
+ruby '3.0.6'
 
 source 'https://rubygems.org'
 
 # Ruby on Rails. http://rubyonrails.org
-gem 'rails', '~> 6.1.7.2'
+gem 'rails', '~> 6.1.7.3'
 
 gem 'dotenv-rails', '~> 2.8', groups: %i[development test]
 
@@ -78,6 +78,7 @@ group :development do
   gem 'web-console', '~> 4.1' # Rails Console on the Browser.
   gem 'listen', '~> 3.7' # The Listen gem listens to file modifications and notifies you about the changes.
   gem 'graphiql-rails', '~> 1.8'
+  gem 'htmlbeautifier', '~> 1.4' # A normaliser/beautifier for HTML that also understands embedded Ruby.
 end
 
 group :test do

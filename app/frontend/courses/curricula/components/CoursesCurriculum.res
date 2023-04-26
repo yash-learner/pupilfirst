@@ -20,7 +20,7 @@ type state = {
 let targetStatusClasses = targetStatus => {
   let statusClasses =
     "curriculum__target-status--" ++ (targetStatus |> TargetStatus.statusClassesSufix)
-  "curriculum__target-status px-3 py-px ml-4 h-6 " ++ statusClasses
+  "curriculum__target-status px-3 py-px ms-4 h-6 " ++ statusClasses
 }
 
 let rendertarget = (target, statusOfTargets, author, courseId) => {
@@ -42,7 +42,9 @@ let rendertarget = (target, statusOfTargets, author, courseId) => {
       (Target.title(target) ++
       ", Status: " ++
       TargetStatus.statusToString(targetStatus))}>
-      <span className="font-medium text-left leading-snug"> {Target.title(target)->str} </span>
+      <span className="font-medium  leading-snug">
+        {Target.title(target)->str}
+      </span>
       {ReactUtils.nullIf(
         <span className={targetStatusClasses(targetStatus)}>
           {TargetStatus.statusToString(targetStatus)->str}
@@ -55,7 +57,7 @@ let rendertarget = (target, statusOfTargets, author, courseId) => {
         title={t("edit_target_button_title", ~variables=[("title", Target.title(target))])}
         ariaLabel={t("edit_target_button_title", ~variables=[("title", Target.title(target))])}
         href={"/school/courses/" ++ courseId ++ "/targets/" ++ targetId ++ "/content"}
-        className="hidden lg:block courses-curriculum__target-quick-link text-gray-400 border-l border-transparent py-6 px-3 hover:text-primary-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-focusColor-500 focus:bg-gray-50 focus:text-primary-500 focus:rounded-lg">
+        className="hidden lg:block courses-curriculum__target-quick-link text-gray-400 border-s border-transparent py-6 px-3 hover:text-primary-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-focusColor-500 focus:bg-gray-50 focus:text-primary-500 focus:rounded-lg">
         <i className="fas fa-pencil-alt" />
       </a>,
       author,
@@ -155,7 +157,7 @@ let issuedCertificate = course =>
       </div>
       <a href={"/c/" ++ csn} className="mt-4 mb-2 btn btn-primary">
         <FaIcon classes="fas fa-certificate" />
-        <span className="ml-2"> {t("issued_certificate_button")->str} </span>
+        <span className="ms-2"> {t("issued_certificate_button")->str} </span>
       </a>
     </div>
   | None => React.null
@@ -239,8 +241,8 @@ let computeNotice = (
 
 let navigationLink = (direction, level, setState) => {
   let (leftIcon, longText, shortText, rightIcon) = switch direction {
-  | #Previous => (Some("fa-arrow-left"), t("nav_previous_level"), "Previous", None)
-  | #Next => (None, t("nav_next_level"), "Next", Some("fa-arrow-right"))
+  | #Previous => (Some("fa-arrow-left rtl:rotate-180"), t("nav_previous_level"), "Previous", None)
+  | #Next => (None, t("nav_next_level"), "Next", Some("fa-arrow-right rtl:rotate-180"))
   }
 
   let arrow = icon =>
@@ -267,10 +269,10 @@ let quickNavigationLinks = (levels, selectedLevel, setState) => {
       {switch (previous, next) {
       | (Some(previousLevel), Some(nextLevel)) =>
         [
-          <div key="previous" className="w-1/2 mr-2">
+          <div key="previous" className="w-1/2 me-2">
             {navigationLink(#Previous, previousLevel, setState)}
           </div>,
-          <div key="next" className="w-1/2 ml-2">
+          <div key="next" className="w-1/2 ms-2">
             {navigationLink(#Next, nextLevel, setState)}
           </div>,
         ] |> React.array
@@ -490,7 +492,7 @@ let make = (
                 "/curriculum?level=" ++
                 Level.number(currentLevel)->string_of_int}>
                 <i className="fas fa-pencil-alt" />
-                <span className="ml-2"> {t("edit_level_button")->str} </span>
+                <span className="ms-2"> {t("edit_level_button")->str} </span>
               </a>
             </div>,
             author,

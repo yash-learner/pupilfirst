@@ -277,7 +277,7 @@ let averageGradeCharts = (
               cy="16"
             />
           </svg>
-          <span className="ml-3 text-lg font-semibold">
+          <span className="ms-3 text-lg font-semibold">
             {(grade.grade |> Js.Float.toString) ++ ("/" ++ (criterion.maxGrade |> string_of_int))
               |> str}
           </span>
@@ -356,7 +356,7 @@ let levelProgressBar = (levelId, levels, levelsCompleted) => {
       <h6 className="text-sm font-semibold"> {t("level_progress") |> str} </h6>
       {courseCompleted
         ? <p className="text-green-600 font-semibold">
-            {`🎉` |> str} <span className="text-xs ml-px"> {t("course_completed") |> str} </span>
+            {`🎉` |> str} <span className="text-xs ms-px"> {t("course_completed") |> str} </span>
           </p>
         : React.null}
     </div>
@@ -404,7 +404,7 @@ let removeNote = (setState, studentDetails, noteId) =>
 let userInfo = (~key, ~avatarUrl, ~name, ~fulltitle) =>
   <div key className="shadow rounded-lg p-4 flex items-center mt-2">
     {CoursesStudents__PersonalCoaches.avatar(avatarUrl, name)}
-    <div className="ml-2 md:ml-3">
+    <div className="ms-2 md:ms-3">
       <div className="text-sm font-semibold"> {name |> str} </div>
       <div className="text-xs"> {fulltitle |> str} </div>
     </div>
@@ -487,7 +487,7 @@ let inactiveWarning = student => {
     warning =>
       <div className="border border-yellow-400 rounded bg-yellow-400 py-2 px-3 mt-3">
         <i className="fas fa-exclamation-triangle" />
-        <span className="ml-2"> {warning |> str} </span>
+        <span className="ms-2"> {warning |> str} </span>
       </div>,
     React.null,
   )
@@ -508,7 +508,7 @@ let ids = student => {
       </span>
     </ClickToCopy>
     <ClickToCopy
-      copy={StudentInfo.id(student)} className="ml-2 inline-block hover:text-primary-500">
+      copy={StudentInfo.id(student)} className="ms-2 inline-block hover:text-primary-500">
       <span className="text-xs"> {"Student ID "->str} </span>
       <span className="font-semibold text-sm underline text-primary-500">
         {`#${StudentInfo.id(student)}`->str}
@@ -532,7 +532,7 @@ let make = (~studentId, ~userId) => {
   }, [studentId])
 
   <div
-    className="fixed z-30 top-0 left-0 w-full h-full overflow-y-scroll md:overflow-hidden bg-white">
+    className="fixed z-30 top-0 start-0 w-full h-full overflow-y-scroll md:overflow-hidden bg-white">
     {switch state.studentData {
     | Loaded(studentDetails) => {
         let student = studentDetails->StudentDetails.student
@@ -544,7 +544,7 @@ let make = (~studentId, ~userId) => {
                 ariaLabel={t("close_student_report")}
                 title={t("close_student_report")}
                 onClick={_ => closeOverlay(StudentDetails.courseId(studentDetails))}
-                className="absolute z-50 left-0 cursor-pointer top-0 inline-flex p-1 rounded-full bg-gray-50 h-10 w-10 justify-center items-center text-gray-600 hover:text-gray-900 hover:bg-gray-300 focus:outline-none focus:text-gray-900 focus:bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-focusColor-500">
+                className="absolute z-50 start-0 cursor-pointer top-0 inline-flex p-1 rounded-full bg-gray-50 h-10 w-10 justify-center items-center text-gray-600 hover:text-gray-900 hover:bg-gray-300 focus:outline-none focus:text-gray-900 focus:bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-focusColor-500">
                 <Icon className="if i-times-regular text-xl lg:text-2xl" />
               </button>
               <div
@@ -599,7 +599,7 @@ let make = (~studentId, ~userId) => {
             {otherTeamMembers(setState, studentId, studentDetails)}
           </div>
           <div
-            className="w-full relative md:w-3/5 bg-gray-50 md:border-l pb-6 2xl:pb-12 md:overflow-y-auto">
+            className="w-full relative md:w-3/5 bg-gray-50 md:border-s pb-6 2xl:pb-12 md:overflow-y-auto">
             <div
               className="sticky top-0 bg-gray-50 pt-2 md:pt-4 px-4 md:px-8 2xl:px-16 2xl:pt-10 z-30">
               <ul
@@ -665,7 +665,7 @@ let make = (~studentId, ~userId) => {
           {SkeletonLoading.image()}
           {SkeletonLoading.multiple(~count=2, ~element=SkeletonLoading.userDetails())}
         </div>
-        <div className="w-full relative md:w-3/5 bg-gray-50 md:border-l p-4 md:p-8 2xl:p-16">
+        <div className="w-full relative md:w-3/5 bg-gray-50 md:border-s p-4 md:p-8 2xl:p-16">
           {SkeletonLoading.contents()} {SkeletonLoading.userDetails()}
         </div>
       </div>
