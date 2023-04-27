@@ -977,7 +977,7 @@ let make = (
                     value=state.title
                   />
                   <School__InputGroupError
-                    message={ts("enter_valid_title")} active={!hasValidTitle}
+                    message={t("enter_valid_title")} active={!hasValidTitle}
                   />
                 </div>
               </div>
