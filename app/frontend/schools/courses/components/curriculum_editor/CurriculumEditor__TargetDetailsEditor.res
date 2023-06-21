@@ -414,8 +414,7 @@ let evaluationCriteriaEditor = (state, evaluationCriteria, send) => {
     |> Js.Array.map(SelectableEvaluationCriterion.make)
   <div id="evaluation_criteria" className="mb-6">
     <label
-      className="block tracking-wide text-sm font-semibold me-6 mb-2"
-      htmlFor="evaluation_criteria">
+      className="block tracking-wide text-sm font-semibold me-6 mb-2" htmlFor="evaluation_criteria">
       <span className="me-2"> <i className="fas fa-list rtl:rotate-180 text-base" /> </span>
       {t("select_criterion_label") |> str}
     </label>
@@ -557,9 +556,7 @@ let targetGroupOnSelect = (state, send, targetGroups, selectable) => {
 
 let targetGroupEditor = (state, targetGroups, levels, send) =>
   <div id="target_group_id" className="mb-6">
-    <label
-      className="block tracking-wide text-sm font-semibold me-6 mb-2"
-      htmlFor="target_group">
+    <label className="block tracking-wide text-sm font-semibold me-6 mb-2" htmlFor="target_group">
       <span className="me-2"> <i className="fas fa-list rtl:rotate-180 text-base" /> </span>
       {t("target_group") |> str}
     </label>
@@ -622,7 +619,8 @@ let methodOfCompletionButton = (methodOfCompletion, state, send, index) => {
     <button
       onClick={updateMethodOfCompletion(methodOfCompletion |> methodOfCompletionSelection, send)}
       className={methodOfCompletionButtonClasses(selected)}>
-      <div className="mb-1"> <img className="w-12 h-12" src=icon /> </div> {buttonString |> str}
+      <div className="mb-1"> <img className="w-12 h-12" src=icon /> </div>
+      <div className="text-center"> {buttonString |> str} </div>
     </button>
   </div>
 }
@@ -668,8 +666,7 @@ let questionCanBeRemoved = state => state.quiz |> Js.Array.length > 1
 let quizEditor = (state, send) =>
   <div>
     <label
-      className="block tracking-wide text-sm font-semibold me-6 mb-3"
-      htmlFor="Quiz question 1">
+      className="block tracking-wide text-sm font-semibold me-6 mb-3" htmlFor="Quiz question 1">
       <span className="me-2"> <i className="fas fa-list rtl:rotate-180 text-base" /> </span>
       {t("prepare_quiz") |> str}
     </label>
@@ -980,7 +977,7 @@ let make = (
                     value=state.title
                   />
                   <School__InputGroupError
-                    message={ts("enter_valid_title")} active={!hasValidTitle}
+                    message={t("enter_valid_title")} active={!hasValidTitle}
                   />
                 </div>
               </div>
@@ -992,8 +989,7 @@ let make = (
               )}
               <div className="flex items-center mb-6">
                 <label
-                  className="block tracking-wide text-sm font-semibold me-6"
-                  htmlFor="evaluated">
+                  className="block tracking-wide text-sm font-semibold me-6" htmlFor="evaluated">
                   <span className="me-2">
                     <i className="fas fa-list rtl:rotate-180 text-base" />
                   </span>
@@ -1077,13 +1073,30 @@ let make = (
                   <span className="me-2">
                     <i className="fas fa-list rtl:rotate-180 text-base" />
                   </span>
-                  {t("completion_instructions.label") |> str}
-                  <span className="ms-1 text-xs font-normal">
-                    {ts("optional_braces") |> str}
-                  </span>
+                  {t("github_action.title")->str}
+                  <span className="ms-1 text-xs font-normal"> {ts("optional_braces")->str} </span>
                 </label>
-                <HelpIcon
-                  link={t("completion_instructions.help_url")} className="ms-1">
+                <HelpIcon link={t("github_action.help_url")} className="ms-1">
+                  {t("github_action.help_description")->str}
+                </HelpIcon>
+                <div className="ms-6 mt-4">
+                  <a
+                    href={`/school/targets/${Target.id(target)}/action`} className="btn btn-subtle">
+                    <i className="fas fa-external-link-alt text-xs mr-2" />
+                    {t("github_action.button_text")->str}
+                  </a>
+                </div>
+              </div>
+              <div className="mb-6">
+                <label
+                  className="tracking-wide text-sm font-semibold" htmlFor="completion-instructions">
+                  <span className="me-2">
+                    <i className="fas fa-list rtl:rotate-180 text-base" />
+                  </span>
+                  {t("completion_instructions.label") |> str}
+                  <span className="ms-1 text-xs font-normal"> {ts("optional_braces") |> str} </span>
+                </label>
+                <HelpIcon link={t("completion_instructions.help_url")} className="ms-1">
                   {t("completion_instructions.help") |> str}
                 </HelpIcon>
                 <div className="ms-6">
@@ -1102,8 +1115,7 @@ let make = (
               <div className="flex max-w-3xl mx-auto px-3 justify-between items-center">
                 <div className="flex items-center shrink-0">
                   <label
-                    className="block tracking-wide text-sm font-semibold me-3"
-                    htmlFor="archived">
+                    className="block tracking-wide text-sm font-semibold me-3" htmlFor="archived">
                     <span className="me-2">
                       <i className="fas fa-list rtl:rotate-180 text-base" />
                     </span>

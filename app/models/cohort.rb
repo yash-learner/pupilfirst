@@ -8,9 +8,12 @@ class Cohort < ApplicationRecord
   has_many :calendar_cohorts, dependent: :destroy
   has_many :calendars, through: :calendar_cohorts
 
+  has_many :course_exports_cohorts, dependent: :destroy
+  has_many :course_exports, through: :course_exports_cohorts
+
   scope :active,
-        -> { where('ends_at > ?', Time.zone.now).or(where(ends_at: nil)) }
-  scope :ended, -> { where('ends_at < ?', Time.zone.now) }
+        -> { where("ends_at > ?", Time.zone.now).or(where(ends_at: nil)) }
+  scope :ended, -> { where("ends_at < ?", Time.zone.now) }
 
   normalize_attribute :description
 
