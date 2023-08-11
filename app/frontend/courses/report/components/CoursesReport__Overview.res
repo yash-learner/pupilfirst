@@ -266,11 +266,36 @@ let make = (~overviewData, ~coaches) =>
     | OverviewData.Loaded(overview) =>
       <div className="flex flex-col">
         <div className="w-full">
+          <div className="mt-8">
+            <p className="text-sm font-semibold"> {t("targets_overview") |> str} </p>
+            <div className="flex -mx-2 flex-wrap mt-2">
+              {targetsCompletionStatus(overview)}
+              {quizPerformanceChart(
+                overview |> StudentOverview.averageQuizScore,
+                overview |> StudentOverview.quizzesAttempted,
+              )}
+            </div>
+          </div>
+          {overview |> StudentOverview.averageGrades |> ArrayUtils.isNotEmpty
+            ? <div className="mt-8">
+                <h6 className="text-sm font-semibold"> {t("average_grades") |> str} </h6>
+                <div className="flex -mx-2 flex-wrap">
+                  {averageGradeCharts(
+                    overview |> StudentOverview.evaluationCriteria,
+                    overview |> StudentOverview.averageGrades,
+                  )}
+                </div>
+              </div>
+            : React.null}
+          {coachInfo(coaches)}
           <div>
             <div className="flex justify-between mt-8">
               <p className="text-sm font-semibold">
                 <span> {t("milestone_status_title")->str} </span>
-                <HelpIcon className="ml-2"> {t("milestone_status_help")->str} </HelpIcon>
+                <HelpIcon
+                  className="ml-2" responsiveAlignment=HelpIcon.Responsive(AlignLeft, AlignCenter)>
+                  {t("milestone_status_help")->str}
+                </HelpIcon>
               </p>
               {milestoneTargetsCompletionStatus(overview)}
             </div>
@@ -293,7 +318,7 @@ let make = (~overviewData, ~coaches) =>
                       ))->str}
                     </p>
                     <div
-                      className="flex-1 text-sm truncate max-w-[20ch] sm:max-w-[30ch] md:max-w-[28ch]">
+                      className="flex-1 text-sm truncate max-w-[24ch] sm:max-w-[40ch] md:max-w-[32ch] lg:max-w-[56ch] 2xl:max-w-[64ch]">
                       <p className="text-ellipsis overflow-hidden">
                         {data->CoursesReport__MilestoneTargetCompletionStatus.title->str}
                       </p>
@@ -321,28 +346,6 @@ let make = (~overviewData, ~coaches) =>
               ->React.array}
             </div>
           </div>
-          <div className="mt-8">
-            <p className="text-sm font-semibold"> {t("targets_overview") |> str} </p>
-            <div className="flex -mx-2 flex-wrap mt-2">
-              {targetsCompletionStatus(overview)}
-              {quizPerformanceChart(
-                overview |> StudentOverview.averageQuizScore,
-                overview |> StudentOverview.quizzesAttempted,
-              )}
-            </div>
-          </div>
-          {overview |> StudentOverview.averageGrades |> ArrayUtils.isNotEmpty
-            ? <div className="mt-8">
-                <h6 className="font-semibold"> {t("average_grades") |> str} </h6>
-                <div className="flex -mx-2 flex-wrap">
-                  {averageGradeCharts(
-                    overview |> StudentOverview.evaluationCriteria,
-                    overview |> StudentOverview.averageGrades,
-                  )}
-                </div>
-              </div>
-            : React.null}
-          {coachInfo(coaches)}
         </div>
       </div>
     | Unloaded =>

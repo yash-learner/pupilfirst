@@ -269,8 +269,10 @@ let updateTitle = (send, event) => {
   send(UpdateTitle(title))
 }
 
-let eligiblePrerequisiteTargets = targets => {
-  targets |> Js.Array.filter(target => !Target.archived(target))
+let eligiblePrerequisiteTargets = (targetId, targets) => {
+  targets
+  ->Js.Array2.filter(target => !Target.archived(target))
+  ->Js.Array2.filter(target => Target.id(target) != targetId)
 }
 
 let setPrerequisiteSearch = (send, value) => send(UpdatePrerequisiteSearchInput(value))
@@ -883,7 +885,14 @@ let updateTarget = (target, state, send, updateTargetCB, targetGroupId, event) =
     | Some(sortIndex) =>
       send(ResetEditor)
       updateTargetCB(
-        Target.create(~id, ~targetGroupId, ~title=state.title, ~sortIndex, ~visibility),
+        Target.create(
+          ~id,
+          ~targetGroupId,
+          ~title=state.title,
+          ~sortIndex,
+          ~visibility,
+          ~milestone=state.milestone,
+        ),
       )
     | None => send(UpdateSaving)
     }
@@ -1000,7 +1009,11 @@ let make = (
                   </button>
                 </div>
               </div>
-              {prerequisiteTargetEditor(send, eligiblePrerequisiteTargets(targets), state)}
+              {prerequisiteTargetEditor(
+                send,
+                eligiblePrerequisiteTargets(targetId, targets),
+                state,
+              )}
               <div className="flex items-center mb-6">
                 <label
                   className="block tracking-wide text-sm font-semibold me-6" htmlFor="evaluated">

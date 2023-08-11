@@ -164,11 +164,12 @@ let updateDescription = (send, description) => {
   send(UpdateDescription(description, hasError))
 }
 
-let saveDisabled = state =>
+let saveDisabled = (state, isNewCourse) =>
   state.hasDateError ||
   (state.hasDescriptionError ||
   (state.description == "" ||
   (state.hasNameError || (state.name == "" || (!state.dirty || state.saving))))) ||
+  state.defaultCohort->Belt.Option.isNone && !isNewCourse ||
   UrlUtils.isInvalid(true, state.processingUrl) ||
   Course.Highlight.isInValidArray(state.highlights)
 
@@ -497,7 +498,8 @@ let handleSelectProgressionLimit = (send, event) => {
   switch target["value"] {
   | "1"
   | "2"
-  | "3" =>
+  | "3"
+  | "4" =>
     send(UpdateProgressionBehavior(Limited(int_of_string(target["value"]))))
   | otherValue => Rollbar.error("Unexpected progression limit was selected: " ++ otherValue)
   }
@@ -595,6 +597,7 @@ let detailsTab = (state, send, course, updateCourseCB, reloadCoursesCB) => {
               <option value="1"> {t("progression_behavior.limited.once")->str} </option>
               <option value="2"> {t("progression_behavior.limited.twice")->str} </option>
               <option value="3"> {t("progression_behavior.limited.thrice")->str} </option>
+              <option value="4"> {t("progression_behavior.limited.four_times")->str} </option>
             </select>
             <div> {t("progression_behavior.limited.description_end")->str} </div>
           </div>
@@ -635,7 +638,7 @@ let detailsTab = (state, send, course, updateCourseCB, reloadCoursesCB) => {
         {switch course {
         | Some(course) =>
           <button
-            disabled={saveDisabled(state)}
+            disabled={saveDisabled(state, false)}
             onClick={_ => updateCourse(state, send, updateCourseCB, course)}
             className="w-full btn btn-large btn-primary mt-3">
             {t("update_course")->str}
@@ -643,7 +646,7 @@ let detailsTab = (state, send, course, updateCourseCB, reloadCoursesCB) => {
 
         | None =>
           <button
-            disabled={saveDisabled(state)}
+            disabled={saveDisabled(state, true)}
             onClick={_ => createCourse(state, send, reloadCoursesCB)}
             className="w-full btn btn-large btn-primary mt-3">
             {t("create_course")->str}
