@@ -3,6 +3,7 @@
 open CoursesStudents__Types
 let str = React.string
 let t = I18n.t(~scope="components.CoursesStudents__StudentOverlay")
+let ts = I18n.t(~scope="shared")
 
 type selectedTab =
   | Notes
@@ -31,7 +32,6 @@ let closeOverlayLink = student => {
 }
 
 module UserDetailsFragment = UserDetails.Fragment
-module LevelFragment = Shared__Level.Fragment
 module CohortFragment = Cohort.Fragment
 module UserProxyFragment = UserProxy.Fragment
 module UserFragment = User.Fragment
@@ -58,9 +58,6 @@ module StudentDetailsQuery = %graphql(`
           droppedOutAt
           course {
             id
-            levels {
-              ...LevelFragment
-            }
           }
         }
         totalTargets
@@ -160,7 +157,6 @@ let getStudentDetails = (studentId, setState) => {
       ~quizScores=response.studentDetails.quizScores,
       ~averageGrades,
       ~courseId=response.studentDetails.student.course.id,
-      ~levels=response.studentDetails.student.course.levels->Js.Array2.map(Level.makeFromFragment),
       ~student=StudentInfo.make(
         ~id=s.id,
         ~taggings=s.taggings,
@@ -260,32 +256,32 @@ let milestoneTargetsCompletionStats = studentDetails => {
     ),
   )
 
-  <div className="flex items-center space-x-4 flex-shrink-0">
-    <p className="text-xs font-medium text-gray-500 flex whitespace-nowrap">
+  <div className="flex items-center gap-2 flex-shrink-0">
+    <p className="text-xs font-medium text-gray-500">
       {(completedMilestoneTargets->string_of_int ++ " / " ++ totalMilestoneTargets->string_of_int)
         ->str}
+      <span className="px-2 text-gray-300"> {"|"->str} </span>
+      {ts(
+        "percentage_completed",
+        ~variables=[("percentage", milestoneTargetCompletionPercentage)],
+      )->str}
     </p>
-    <div className="flex items-center space-x-1">
-      <p className="text-center text-xs font-medium rounded-sm px-1 bg-gray-200">
-        {milestoneTargetCompletionPercentage ++ "%" |> str}
-      </p>
-      <div>
-        <svg viewBox="0 0 36 36" className="courses-milestone-complete__doughnut-chart ">
-          <path
-            className="courses-milestone-complete__doughnut-chart-bg "
-            d="M18 2.0845
+    <div>
+      <svg viewBox="0 0 36 36" className="courses-milestone-complete__doughnut-chart ">
+        <path
+          className="courses-milestone-complete__doughnut-chart-bg "
+          d="M18 2.0845
             a 15.9155 15.9155 0 0 1 0 31.831
             a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-          <path
-            className="courses-milestone-complete__doughnut-chart-stroke"
-            strokeDasharray={milestoneTargetCompletionPercentage ++ ", 100"}
-            d="M18 2.0845
+        />
+        <path
+          className="courses-milestone-complete__doughnut-chart-stroke"
+          strokeDasharray={milestoneTargetCompletionPercentage ++ ", 100"}
+          d="M18 2.0845
             a 15.9155 15.9155 0 0 1 0 31.831
             a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-        </svg>
-      </div>
+        />
+      </svg>
     </div>
   </div>
 }
@@ -378,16 +374,6 @@ let showSocialLinks = socialLinks =>
 
 let setSelectedTab = (selectedTab, setState) =>
   setState(state => {...state, selectedTab: selectedTab})
-
-let studentLevelClasses = (levelNumber, levelCompleted, currentLevelNumber) => {
-  let reached = levelNumber <= currentLevelNumber ? "student-overlay__student-level--reached" : ""
-
-  let current = levelNumber == currentLevelNumber ? " student-overlay__student-level--current" : ""
-
-  let completed = levelCompleted ? " student-overlay__student-level--completed" : ""
-
-  reached ++ (current ++ completed)
-}
 
 let addNote = (setState, studentDetails, onAddCoachNotesCB, note) => {
   onAddCoachNotesCB()
@@ -597,9 +583,7 @@ let make = (~studentId, ~userId) => {
             {otherTeamMembers(setState, studentId, studentDetails)}
             <div className="mt-4">
               <div className="justify-between mt-8 flex space-x-2">
-                <p className="text-sm font-semibold">
-                  {"Milestone Targets Completion Status"->str}
-                </p>
+                <p className="text-sm font-semibold"> {t("milestone_targets")->str} </p>
                 {milestoneTargetsCompletionStats(studentDetails)}
               </div>
               <div className="space-y-2">
@@ -615,8 +599,8 @@ let make = (~studentId, ~userId) => {
                       "data-milestone-id": data->CoursesStudents__MilestoneTargetsCompletionStatus.id,
                     }>
                     <div
-                      className="flex mt-2 items-center p-2 rounded-md border bg-gray-100 transition">
-                      <div className="mr-2">
+                      className="flex gap-2 mt-2 items-center p-2 rounded-md border bg-gray-100 transition">
+                      <div>
                         <span
                           className={"text-xs font-medium " ++ {
                             data->CoursesStudents__MilestoneTargetsCompletionStatus.completed
@@ -631,14 +615,14 @@ let make = (~studentId, ~userId) => {
                         </span>
                       </div>
                       <div>
-                        <p className="text-sm font-semibold mr-2">
-                          {("M" ++
+                        <p className="text-sm font-semibold">
+                          {(ts("m") ++
                           string_of_int(
                             CoursesStudents__MilestoneTargetsCompletionStatus.milestoneNumber(data),
                           ))->str}
                         </p>
                       </div>
-                      <div className="flex-1 text-sm">
+                      <div className="flex-1 text-sm truncate">
                         {data->CoursesStudents__MilestoneTargetsCompletionStatus.title->str}
                       </div>
                     </div>
