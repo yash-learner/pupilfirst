@@ -100,7 +100,7 @@ class CoursesController < ApplicationController
   private
 
   def course
-    @course ||= Course.find(params[:id])
+    @course ||= Course.live.find_by(id: params[:id]) || NullObject.new
   end
 
   def preview_or_authenticate
@@ -117,7 +117,7 @@ class CoursesController < ApplicationController
   end
 
   def find_course
-    policy_scope(Course).find(params[:id])
+    policy_scope(Course).find_by(id: params[:id]) || NullObject.new
   end
 
   def save_tag
