@@ -17,7 +17,7 @@ env:
   YARN_CHECKSUM_BEHAVIOR: ignore
 jobs:
   tests:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'skip ci')"
 
     services:
@@ -60,12 +60,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Use Ruby 3.2
         uses: ruby/setup-ruby@v1
-      - name: Set up Docker on macOS
-        run: |
-          brew install colima docker
-          colima start
-      - name: Verify Docker Installation
-        run: docker version
       - name: Set branch name & commit SHA in env
         uses: actions/github-script@v3
         with:
@@ -131,6 +125,14 @@ jobs:
           path: |
             tmp/capybara
             log/test.log
+  tests-macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: yarn install
+      - name: Compile ReScript files
+        run: yarn run re:build
   dockerhub-master:
     needs: tests
     environment: Production
